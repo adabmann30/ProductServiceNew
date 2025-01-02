@@ -6,7 +6,7 @@ import lombok.Setter;
 @Setter
 
 public class FSPDTO {
-    private int id;
+    private Long id;
     private String title;
     private String description;
     private double price;

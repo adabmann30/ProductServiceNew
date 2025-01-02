@@ -24,20 +24,28 @@ public class FSPS implements ProductService{
 
         Category category = new Category();
         category.setDesc(dto.getDescription());
+        category.setId(product.getId());
         product.setCategory(category);
 
         return product;
     }
     @Override
-    public Product getProductByid(int id) {
-        FSPDTO fspdto = restTemplate.getForObject("https://fakestoreapi.com/products/" + id, FSPDTO.class);
+    public Product getProductByid(Long id) {
+        FSPDTO fspdto =
+                restTemplate.getForObject("https://fakestoreapi.com/products/" + id, FSPDTO.class);
         if(fspdto==null) return null;
         return convertFSDTOtoProduct(fspdto);
     }
 
     @Override
     public List<Product> getAllProducts() {
+        FSPDTO[] fspdtos =
+                restTemplate.getForObject("https://fakestoreapi.com/products", FSPDTO[].class);
 
-        return new ArrayList<>();
+        List<Product> output = new ArrayList<>();
+        for(FSPDTO fspdto : fspdtos){
+            output.add(convertFSDTOtoProduct(fspdto));
+        }
+        return output;
     }
 }
