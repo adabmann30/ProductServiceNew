@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 public interface ProductService {
-    public Product getProductByid(Long id);
-    public List<Product> getAllProducts();
+    Product getProductByid(Long id);
+    List<Product> getAllProducts();
+    Product ReplaceProduct(Long id, Product product);
 }

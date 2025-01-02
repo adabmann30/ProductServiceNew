@@ -2,10 +2,7 @@ package com.dabman.WebAPI.controllers;
 
 import com.dabman.WebAPI.models.Product;
 import com.dabman.WebAPI.services.ProductService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +17,7 @@ public class ProductController {
         this.productService = productService;
     }
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable("id") Long id){
+    public Product getProductByid(@PathVariable("id") Long id){
 
         return productService.getProductByid(id);
     }
@@ -28,5 +25,9 @@ public class ProductController {
     public List<Product> getAllProducts() {
 
         return productService.getAllProducts();
+    }
+    @PutMapping("/{id}")
+    public Product ReplaceProduct(@PathVariable("id") Long id, @RequestBody Product product){
+        return productService.ReplaceProduct(id, product);
     }
 }
