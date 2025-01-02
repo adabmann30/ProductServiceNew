@@ -23,7 +23,7 @@ public class FSPS implements ProductService{
         product.setImage(dto.getImage());
 
         Category category = new Category();
-        category.setDesc(dto.getDescription());
+        category.setDesc(dto.getCategory());
         category.setId(product.getId());
         product.setCategory(category);
 
