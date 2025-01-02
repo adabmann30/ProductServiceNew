@@ -2,6 +2,8 @@ package com.dabman.WebAPI.controllers;
 
 import com.dabman.WebAPI.models.Product;
 import com.dabman.WebAPI.services.ProductService;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,9 +19,15 @@ public class ProductController {
         this.productService = productService;
     }
     @GetMapping("/{id}")
-    public Product getProductByid(@PathVariable("id") Long id){
-
-        return productService.getProductByid(id);
+    public ResponseEntity<Product> getProductByid(@PathVariable("id") Long id){
+        Product product = productService.getProductByid(id);
+        ResponseEntity<Product> responseEntity;
+        if(product==null){
+            responseEntity = new ResponseEntity<>(HttpStatusCode.valueOf(201));
+            return responseEntity;
+        }
+        responseEntity = new ResponseEntity<>(product, HttpStatusCode.valueOf(200));
+        return responseEntity;
     }
     @GetMapping()
     public List<Product> getAllProducts() {
