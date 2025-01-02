@@ -1,6 +1,7 @@
 package com.dabman.WebAPI.services;
 
 import com.dabman.WebAPI.DTOs.FSPDTO;
+import com.dabman.WebAPI.Exceptions.ProductNotFound;
 import com.dabman.WebAPI.models.Category;
 import com.dabman.WebAPI.models.Product;
 import org.springframework.http.HttpMethod;
@@ -17,6 +18,7 @@ public class FSPS implements ProductService{
     FSPS(RestTemplate restTemplate){
         this.restTemplate = restTemplate;
     }
+
     private FSPDTO convertProducttoFSDTO(Product product){
         FSPDTO fspdto = new FSPDTO();
         fspdto.setId(product.getId());
@@ -28,6 +30,7 @@ public class FSPS implements ProductService{
         fspdto.setCategory(category.getDesc());
         return fspdto;
     }
+
     private Product convertFSDTOtoProduct(FSPDTO dto){
         Product product = new Product();
         product.setId(dto.getId());
@@ -43,14 +46,19 @@ public class FSPS implements ProductService{
 
         return product;
     }
+
+    //FetchById
     @Override
-    public Product getProductByid(Long id) {
+    public Product getProductByid(Long id) throws ProductNotFound {
         FSPDTO fspdto =
                 restTemplate.getForObject("https://fakestoreapi.com/products/" + id, FSPDTO.class);
-        if(fspdto==null) return null;
+        if(fspdto==null) {
+            throw new ProductNotFound("ID number " + id + " not found.");
+        }
         return convertFSDTOtoProduct(fspdto);
     }
 
+    //AllProductsShow
     @Override
     public List<Product> getAllProducts() {
         FSPDTO[] fspdtos =
@@ -63,6 +71,7 @@ public class FSPS implements ProductService{
         return output;
     }
 
+    //REPLACEservice
     @Override
     public Product ReplaceProduct(Long id, Product product) {
         FSPDTO fspdto = convertProducttoFSDTO(product);
@@ -73,5 +82,10 @@ public class FSPS implements ProductService{
         FSPDTO output = restTemplate.execute("https://fakestoreapi.com/products/" + id, HttpMethod.PUT, requestCallback, responseExtractor);
 
         return convertFSDTOtoProduct(output);
+    }
+    //DELETEservice
+    @Override
+    public Void DeleteProduct(Long id) {
+        return null;
     }
 }
